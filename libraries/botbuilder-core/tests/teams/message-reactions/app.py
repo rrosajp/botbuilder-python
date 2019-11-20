@@ -5,7 +5,7 @@ import sys
 from datetime import datetime
 from types import MethodType
 
-from flask import Flask, request, Response
+from aiohttp import web
 from botbuilder.core import (
     BotFrameworkAdapterSettings,
     TurnContext,
@@ -15,15 +15,16 @@ from botbuilder.core import (
 from botbuilder.schema import Activity, ActivityTypes
 from activity_log import ActivityLog
 from bots import MessageReactionBot
-from threading_helper import run_coroutine
+# from threading_helper import run_coroutine
+from config import DefaultConfig
 
 # Create the Flask app
-APP = Flask(__name__, instance_relative_config=True)
-APP.config.from_object("config.DefaultConfig")
+CONFIG = DefaultConfig()
+PORT = CONFIG.PORT
 
 # Create adapter.
 # See https://aka.ms/about-bot-adapter to learn more about how bots work.
-SETTINGS = BotFrameworkAdapterSettings(APP.config["APP_ID"], APP.config["APP_PASSWORD"])
+SETTINGS = BotFrameworkAdapterSettings(CONFIG.APP_ID, CONFIG.APP_PASSWORD)
 ADAPTER = BotFrameworkAdapter(SETTINGS)
 
 
@@ -64,31 +65,29 @@ ACTIVITY_LOG = ActivityLog(MEMORY)
 BOT = MessageReactionBot(ACTIVITY_LOG)
 
 # Listen for incoming requests on /api/messages.s
-@APP.route("/api/messages", methods=["POST"])
-def messages():
+async def messages(req: web.Request) -> web.Response:
     # Main bot message handler.
-    if "application/json" in request.headers["Content-Type"]:
-        body = request.json
+    if "application/json" in req.headers["Content-Type"]:
+        body = await req.json()
     else:
-        return Response(status=415)
+        return web.Response(status=415)
 
     activity = Activity().deserialize(body)
     auth_header = (
-        request.headers["Authorization"] if "Authorization" in request.headers else ""
+        req.headers["Authorization"] if "Authorization" in req.headers else ""
     )
 
     try:
-        print("about to create task")
-        print("about to run until complete")
-        run_coroutine(ADAPTER.process_activity(activity, auth_header, BOT.on_turn))
-        print("is now complete")
-        return Response(status=201)
+        await ADAPTER.process_activity(activity, auth_header, BOT.on_turn)
+        return web.Response(status=201)
     except Exception as exception:
         raise exception
 
 
-if __name__ == "__main__":
-    try:
-        APP.run(debug=False, port=APP.config["PORT"])  # nosec debug
-    except Exception as exception:
-        raise exception
+APP = web.Application()
+APP.router.add_post("/api/messages", messages)
+
+try:
+    web.run_app(APP, host="localhost", port=PORT)
+except Exception as error:
+    raise error
