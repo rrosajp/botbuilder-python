@@ -5,7 +5,7 @@ import sys
 from datetime import datetime
 from types import MethodType
 
-from flask import Flask, request, Response
+from quart import Quart, request, Response
 from botbuilder.core import (
     BotFrameworkAdapterSettings,
     TurnContext,
@@ -15,10 +15,10 @@ from botbuilder.core import (
 from botbuilder.schema import Activity, ActivityTypes
 from activity_log import ActivityLog
 from bots import MessageReactionBot
-from threading_helper import run_coroutine
+# from threading_helper import run_coroutine
 
 # Create the Flask app
-APP = Flask(__name__, instance_relative_config=True)
+APP = Quart(__name__, instance_relative_config=True)
 APP.config.from_object("config.DefaultConfig")
 
 # Create adapter.
@@ -65,12 +65,12 @@ BOT = MessageReactionBot(ACTIVITY_LOG)
 
 # Listen for incoming requests on /api/messages.s
 @APP.route("/api/messages", methods=["POST"])
-def messages():
+async def messages():
     # Main bot message handler.
     if "application/json" in request.headers["Content-Type"]:
-        body = request.json
+        body = await request.json
     else:
-        return Response(status=415)
+        return Response("", status=415)
 
     activity = Activity().deserialize(body)
     auth_header = (
@@ -80,9 +80,9 @@ def messages():
     try:
         print("about to create task")
         print("about to run until complete")
-        run_coroutine(ADAPTER.process_activity(activity, auth_header, BOT.on_turn))
+        await ADAPTER.process_activity(activity, auth_header, BOT.on_turn)
         print("is now complete")
-        return Response(status=201)
+        return Response("", status=201)
     except Exception as exception:
         raise exception
 
