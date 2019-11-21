@@ -1,19 +1,17 @@
 # Copyright (c) Microsoft Corporation. All rights reserved.
 # Licensed under the MIT License.
 
-import asyncio
 import sys
 from datetime import datetime
 
-from flask import Flask, request, Response
+from quart import Quart, request, Response
 from botbuilder.core import BotFrameworkAdapterSettings, TurnContext, BotFrameworkAdapter
 from botbuilder.schema import Activity, ActivityTypes
 
 from bots import EchoBot
 
-# Create the loop and Flask app
-LOOP = asyncio.get_event_loop()
-app = Flask(__name__, instance_relative_config=True)
+# Create the loop and Quart app
+app = Quart(__name__, instance_relative_config=True)
 app.config.from_object("config.DefaultConfig")
 
 # Create adapter.
@@ -53,12 +51,12 @@ BOT = EchoBot()
 
 # Listen for incoming requests on /api/messages
 @app.route("/api/messages", methods=["POST"])
-def messages():
+async def messages():
     # Main bot message handler.
     if "application/json" in request.headers["Content-Type"]:
-        body = request.json
+        body = await request.json
     else:
-        return Response(status=415)
+        return Response("", status=415)
 
     activity = Activity().deserialize(body)
     auth_header = (
@@ -66,11 +64,8 @@ def messages():
     )
 
     try:
-        task = LOOP.create_task(
-            ADAPTER.process_activity(activity, auth_header, BOT.on_turn)
-        )
-        LOOP.run_until_complete(task)
-        return Response(status=201)
+        await ADAPTER.process_activity(activity, auth_header, BOT.on_turn)
+        return Response("", status=201)
     except Exception as exception:
         raise exception
 
