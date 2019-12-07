@@ -69,11 +69,17 @@ async def messages(req: Request) -> Response:
         raise exception
 
 
-APP = web.Application()
-APP.router.add_post("/api/messages", messages)
+def create_app(argv):
+    print('Printing received argv:')
+    print(argv)
+    print('End of print.')
+    app = web.Application()
+    app.router.add_post("/api/messages", messages)
+    return app
 
 if __name__ == "__main__":
     try:
-        web.run_app(APP, host="localhost", port=CONFIG.PORT)
+        app = create_app('main')
+        web.run_app(app, host='localhost' port=CONFIG.PORT)
     except Exception as error:
         raise error
