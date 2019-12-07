@@ -80,6 +80,6 @@ def create_app(argv):
 if __name__ == "__main__":
     try:
         app = create_app('main')
-        web.run_app(app, host='localhost' port=CONFIG.PORT)
+        web.run_app(app, host='localhost', port=CONFIG.PORT)
     except Exception as error:
         raise error
