@@ -4,13 +4,16 @@
 # Licensed under the MIT License. See License.txt in the project root for
 # license information.
 # --------------------------------------------------------------------------
-
+from .aiohttp_application_factory import AioHttpApplicationFactory
+from .aiohttp_bot_application import AioHttpBotApplication
+from .aiohttp_bot_controller import AioHttpBotController
 from .aiohttp_channel_service import aiohttp_channel_service_routes
-from .aiohttp_channel_service_exception_middleware import aiohttp_error_middleware
 from .bot_framework_http_client import BotFrameworkHttpClient
 
 __all__ = [
     "aiohttp_channel_service_routes",
-    "aiohttp_error_middleware",
+    "AioHttpApplicationFactory",
+    "AioHttpBotApplication",
+    "AioHttpBotController",
     "BotFrameworkHttpClient",
 ]
