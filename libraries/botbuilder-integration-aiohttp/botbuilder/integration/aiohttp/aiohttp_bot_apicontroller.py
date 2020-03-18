@@ -13,9 +13,6 @@ class AioHttpBotApiController(AioHttpBotController, ABC):
     message handler for a bot.
     """
 
-    def path(self) -> str:
-        return "/api/messages"
-
     async def post(self, req: Request) -> Response:
         """
         Main bot message handler.

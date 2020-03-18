@@ -45,4 +45,5 @@ class AdapterWithErrorHandler(BotFrameworkAdapter):
             # Send a trace activity, which will be displayed in Bot Framework Emulator
             await context.send_activity(trace_activity)
 
-        # TODO handle conversation state (if supplied)
+        if self.conversation_state:
+            await self.conversation_state.delete(context)

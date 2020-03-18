@@ -3,7 +3,7 @@ from .bot_controller import BotController
 from .application_factory import ApplicationFactory
 from .bot_adapter_with_errorhandler import AdapterWithErrorHandler
 from .configuration import Configuration
-from .default_configuration import DefaultConfiguration
+from .configparser_configuration import ConfigParserConfiguration
 
 __all__ = [
     "BotController",
@@ -11,5 +11,5 @@ __all__ = [
     "ApplicationFactory",
     "AdapterWithErrorHandler",
     "Configuration",
-    "DefaultConfiguration",
+    "ConfigParserConfiguration",
 ]

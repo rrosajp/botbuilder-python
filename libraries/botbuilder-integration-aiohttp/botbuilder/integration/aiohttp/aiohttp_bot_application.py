@@ -1,6 +1,7 @@
+from typing import Any, Dict
+
 from aiohttp import web
 from botbuilder.core.integration import BotApplication, BotController, Configuration
-from .aiohttp_bot_controller import AioHttpBotController
 
 
 class AioHttpBotApplication(BotApplication, web.Application):
@@ -9,14 +10,16 @@ class AioHttpBotApplication(BotApplication, web.Application):
         web.Application.__init__(self, **kwargs)
 
     def run(self, port: int = None, host: str = "localhost"):
-        web.run_app(self, host=host or self.config["host"], port=port or self.config["port"])
+        web.run_app(
+            self, host=host or self.config["host"], port=port or self.config["port"]
+        )
 
-    def add_post(self, controller: BotController):
-        if not isinstance(controller, AioHttpBotController):
-            raise TypeError("AioHttpBotController is required")
-        self.router.add_post(controller.path(), controller.post)
+    def add_post(
+        self, path: str, controller: Any, target_kwargs: Dict[str, Any] = None
+    ):
+        controller_instance = controller(**target_kwargs)
+        self.router.add_post(path, controller_instance.post)
 
-    def add_get(self, controller: BotController):
-        if not isinstance(controller, AioHttpBotController):
-            raise TypeError("AioHttpBotController is required")
-        self.router.add_get(controller.path(), controller.get)
+    def add_get(self, path: str, controller: Any, target_kwargs: Dict[str, Any] = None):
+        controller_instance = controller(**target_kwargs)
+        self.router.add_get(path, controller_instance.get)

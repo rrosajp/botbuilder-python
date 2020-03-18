@@ -6,12 +6,16 @@ from botbuilder.integration.aiohttp import AioHttpApplicationFactory
 from bots import EchoBot
 
 
-class EchoApplicationFactory(AioHttpApplicationFactory):
+# Subclass ApplicationFactory so that a Bot can be created.
+class BotApplicationFactory(AioHttpApplicationFactory):
     def _create_bot(self) -> ActivityHandler:
+        # EchoBot is our bot in this project.
         return EchoBot()
 
 
-APP = EchoApplicationFactory().get_application()
+# Create the BotApplication.  The ARM templates expect that
+# that the application is in the variable 'APP'
+APP = BotApplicationFactory().get_application()
 
 if __name__ == "__main__":
     APP.run()
