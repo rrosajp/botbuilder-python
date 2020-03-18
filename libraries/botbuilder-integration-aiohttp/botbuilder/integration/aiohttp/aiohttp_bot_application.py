@@ -9,9 +9,9 @@ class AioHttpBotApplication(BotApplication, web.Application):
         BotApplication.__init__(self, configuration)
         web.Application.__init__(self, **kwargs)
 
-    def run(self, port: int = None, host: str = "localhost"):
+    def run_bot(self, port: int = None, host: str = "localhost"):
         web.run_app(
-            self, host=host or self.config["host"], port=port or self.config["port"]
+            self, host=host or self.bot_config["host"], port=port or self.bot_config["port"]
         )
 
     def add_post(

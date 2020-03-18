@@ -12,9 +12,9 @@ class TornadoBotApplication(BotApplication):
         BotApplication.__init__(self, configuration)
         self.app = tornado.web.Application()
 
-    def run(self, port: int = None, host: str = "localhost"):
+    def run_bot(self, port: int = None, host: str = "localhost"):
         parse_command_line()
-        self.app.listen(port or self.config["port"], host or self.config["host"])
+        self.app.listen(port or self.bot_config["port"], host or self.bot_config["host"])
         tornado.ioloop.IOLoop.current().start()
 
     def add_post(self, path: str, controller: Any, target_kwargs: Dict[str, Any] = None):

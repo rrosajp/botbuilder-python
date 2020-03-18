@@ -18,4 +18,4 @@ class BotApplicationFactory(AioHttpApplicationFactory):
 APP = BotApplicationFactory().get_application()
 
 if __name__ == "__main__":
-    APP.run()
+    APP.run_bot()

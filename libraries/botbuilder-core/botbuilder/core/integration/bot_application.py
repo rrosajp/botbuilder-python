@@ -6,10 +6,10 @@ from .configuration import Configuration
 
 class BotApplication(ABC):
     def __init__(self, configuration: Configuration):
-        self.config = configuration
+        self.bot_config = configuration
 
     @abstractmethod
-    def run(self, port: int = None, host: str = "localhost"):
+    def run_bot(self, port: int = None, host: str = "localhost"):
         """
         Runs the application.
         :param port: [Optional] Defaults to "port" in Configuration

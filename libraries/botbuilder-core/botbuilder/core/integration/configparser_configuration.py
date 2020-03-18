@@ -14,6 +14,9 @@ class ConfigParserConfiguration(Configuration):
 
     def __init__(self, path: str = "appsettings.properties"):
         self.config = ConfigParser()
+        # this disables lower casing of keys, which means callers should be passing
+        # case-sensitive keys.
+        self.config.optionxform = str
         self.config.read(path)
 
     def get(self, key: str) -> str:
@@ -22,3 +25,6 @@ class ConfigParserConfiguration(Configuration):
         if not value:
             value = os.environ.get(key)
         return value
+
+    def all(self) -> dict:
+        return dict(self.config.items("bot"))
