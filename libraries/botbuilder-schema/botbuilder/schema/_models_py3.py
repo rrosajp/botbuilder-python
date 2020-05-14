@@ -1405,7 +1405,7 @@ class OAuthCard(Model):
         "text": {"key": "text", "type": "str"},
         "connection_name": {"key": "connectionName", "type": "str"},
         "buttons": {"key": "buttons", "type": "[CardAction]"},
-        "token_exchange_resource": {"key": "tokenExchangeResource", "type": "object"},
+        "token_exchange_resource": {"key": "tokenExchangeResource", "type": "TokenExchangeResource"},
     }
 
     def __init__(
@@ -1899,6 +1899,38 @@ class TokenExchangeState(Model):
         self.relates_to = relates_to
         self.bot_url = bot_url
         self.ms_app_id = ms_app_id
+
+
+class TokenExchangeResource(Model):
+    """TokenExchangeResource.
+
+    :param id: A unique identifier for this token exchange instance.
+    :type id: str
+    :param uri: The application ID / resource identifier with which to exchange a token on behalf of.
+    :type uri: str
+    :param providerId: The identifier of the provider with which to attempt a token exchange A value of
+    null or empty will default to Azure Active Directory.
+    :type providerId: str
+    """
+
+    _attribute_map = {
+        "id": {"key": "id", "type": "str"},
+        "uri": {"key": "uri", "type": "str"},
+        "provider_id": {"key": "providerId", "type": "str"},
+    }
+
+    def __init__(
+        self,
+        *,
+        id: str = None,
+        uri: str = None,
+        provider_id: str = None,
+        **kwargs
+    ) -> None:
+        super(TokenExchangeResource, self).__init__(**kwargs)
+        self.id = id
+        self.uri = uri
+        self.provider_id = provider_id
 
 
 class TokenRequest(Model):

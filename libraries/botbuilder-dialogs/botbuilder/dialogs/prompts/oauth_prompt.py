@@ -39,6 +39,7 @@ from botbuilder.schema import (
     TokenResponse,
     TokenExchangeInvokeRequest,
     TokenExchangeInvokeResponse,
+    TokenExchangeResource,
 )
 
 from .prompt_options import PromptOptions
@@ -383,7 +384,7 @@ class OAuthPrompt(Dialog):
                                     value=link,
                                 )
                             ],
-                            token_exchange_resource=json_token_ex_resource,
+                            token_exchange_resource=TokenExchangeResource(**json_token_ex_resource),
                         )
                     )
                 )

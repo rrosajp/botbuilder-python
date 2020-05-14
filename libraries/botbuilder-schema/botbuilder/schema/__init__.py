@@ -55,6 +55,7 @@ try:
     from ._models_py3 import ThumbnailUrl
     from ._models_py3 import TokenExchangeInvokeRequest
     from ._models_py3 import TokenExchangeInvokeResponse
+    from ._models_py3 import TokenExchangeResource
     from ._models_py3 import TokenExchangeState
     from ._models_py3 import TokenRequest
     from ._models_py3 import TokenResponse
@@ -176,6 +177,7 @@ __all__ = [
     "ThumbnailUrl",
     "TokenExchangeInvokeRequest",
     "TokenExchangeInvokeResponse",
+    "TokenExchangeResource",
     "TokenExchangeState",
     "TokenRequest",
     "TokenResponse",
