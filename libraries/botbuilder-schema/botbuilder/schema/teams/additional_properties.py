@@ -7,6 +7,7 @@ class ContentType:
     FILE_CONSENT_CARD = "application/vnd.microsoft.teams.card.file.consent"
     FILE_DOWNLOAD_INFO = "application/vnd.microsoft.teams.file.download.info"
     FILE_INFO_CARD = "application/vnd.microsoft.teams.card.file.info"
+    TAB_UNFURLING = "application/vnd.microsoft.teams.tab"
 
 
 class Type:

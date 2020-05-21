@@ -1927,3 +1927,44 @@ class TenantInfo(Model):
     def __init__(self, *, id: str = None, **kwargs) -> None:
         super(TenantInfo, self).__init__(**kwargs)
         self.id = id
+
+
+class Tab(Model):
+    """Describes a Tab.
+
+    :param entity_id: A unique identifier for the tab (chosen by bot developer)
+    :type entity_id: str
+    :param name: Display name for the tab
+    :type name: str
+    :param content_url: The https:// URL that points to the entity UI to be displayed in the Teams canvas
+    :type content_url: str
+    :param website_url: The "open in website" URL
+    :type website_url: str
+    :param remove_url: The page to be displayed when a user removes a tab
+    :type remove_url: str
+    """
+
+    _attribute_map = {
+        "entity_id": {"key": "entityId", "type": "str"},
+        "name": {"key": "name", "type": "str"},
+        "content_url": {"key": "contentUrl", "type": "str"},
+        "website_url": {"key": "websiteUrl", "type": "str"},
+        "remove_url": {"key": "removeUrl", "type": "str"},
+    }
+
+    def __init__(
+        self,
+        *,
+        entity_id: str = None,
+        name: str = None,
+        content_url: str = None,
+        website_url: str = None,
+        remove_url: str = None,
+        **kwargs
+    ) -> None:
+        super(Tab, self).__init__(**kwargs)
+        self.entity_id = entity_id
+        self.name = name
+        self.content_url = content_url
+        self.website_url = website_url
+        self.remove_url = remove_url
