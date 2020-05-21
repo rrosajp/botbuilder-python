@@ -54,6 +54,7 @@ try:
     from ._models_py3 import O365ConnectorCardTextInput
     from ._models_py3 import O365ConnectorCardViewAction
     from ._models_py3 import SigninStateVerificationQuery
+    from ._models_py3 import Tab
     from ._models_py3 import TaskModuleContinueResponse
     from ._models_py3 import TaskModuleMessageResponse
     from ._models_py3 import TaskModuleRequest
@@ -171,6 +172,7 @@ __all__ = [
     "O365ConnectorCardTextInput",
     "O365ConnectorCardViewAction",
     "SigninStateVerificationQuery",
+    "Tab",
     "TaskModuleContinueResponse",
     "TaskModuleMessageResponse",
     "TaskModuleRequest",

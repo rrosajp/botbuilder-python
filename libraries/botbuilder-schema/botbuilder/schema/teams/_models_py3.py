@@ -1948,7 +1948,6 @@ class Tab(Model):
         "entity_id": {"key": "entityId", "type": "str"},
         "name": {"key": "name", "type": "str"},
         "content_url": {"key": "contentUrl", "type": "str"},
-        "website_url": {"key": "websiteUrl", "type": "str"},
         "remove_url": {"key": "removeUrl", "type": "str"},
     }
 
