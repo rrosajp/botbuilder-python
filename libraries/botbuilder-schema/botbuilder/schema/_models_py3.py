@@ -1,6 +1,8 @@
 # Copyright (c) Microsoft Corporation. All rights reserved.
 # Licensed under the MIT License.
 
+from typing import List
+
 from botbuilder.schema._connector_client_enums import ActivityTypes
 from datetime import datetime
 from enum import Enum
@@ -242,7 +244,7 @@ class Activity(Model):
     :type semantic_action: ~botframework.connector.models.SemanticAction
     :param caller_id: A string containing an IRI identifying the caller of a
      bot. This field is not intended to be transmitted over the wire, but is
-     instead populated by bots and clients based on cryptographically 
+     instead populated by bots and clients based on cryptographically
      verifiable data that asserts the identity of the callers (e.g. tokens).
     :type caller_id: str
     """
@@ -744,7 +746,7 @@ class Activity(Model):
             service_url=self.service_url,
         )
 
-    def get_mentions(self) -> [Mention]:
+    def get_mentions(self) -> List[Mention]:
         """
         Resolves the mentions from the entities of this activity.
 
@@ -1703,6 +1705,44 @@ class InnerHttpError(Model):
         self.body = body
 
 
+class InvokeResponse(Model):
+    """
+    Tuple class containing an HTTP Status Code and a JSON serializable
+    object. The HTTP Status code is, in the invoke activity scenario, what will
+    be set in the resulting POST. The Body of the resulting POST will be
+    JSON serialized content.
+
+    The body content is defined by the producer.  The caller must know what
+    the content is and deserialize as needed.
+    """
+
+    _attribute_map = {
+        "status": {"key": "status", "type": "int"},
+        "body": {"key": "body", "type": "object"},
+    }
+
+    def __init__(self, *, status: int = None, body: object = None, **kwargs):
+        """
+        Gets or sets the HTTP status and/or body code for the response
+        :param status: The HTTP status code.
+        :param body: The JSON serializable body content for the response.  This object
+        must be serializable by the core Python json routines.  The caller is responsible
+        for serializing more complex/nested objects into native classes (lists and
+        dictionaries of strings are acceptable).
+        """
+        super().__init__(**kwargs)
+        self.status = status
+        self.body = body
+
+    def is_successful_status_code(self) -> bool:
+        """
+        Gets a value indicating whether the invoke response was successful.
+        :return: A value that indicates if the HTTP response was successful. true if status is in
+        the Successful range (200-299); otherwise false.
+        """
+        return 200 <= self.status <= 299
+
+
 class MediaCard(Model):
     """Media card.
 
@@ -2365,7 +2405,7 @@ class TokenResponse(Model):
      "2007-04-05T14:30Z")
     :type expiration: str
     :param channel_id: The channelId of the TokenResponse
-    :type channel_id: str    
+    :type channel_id: str
     """
 
     _attribute_map = {
@@ -2486,3 +2526,92 @@ class VideoCard(Model):
         self.aspect = aspect
         self.duration = duration
         self.value = value
+
+
+class AdaptiveCardInvokeAction(Model):
+    """AdaptiveCardInvokeAction.
+
+    Defines the structure that arrives in the Activity.Value.Action for Invoke activity with
+    name of 'adaptiveCard/action'.
+
+    :param type: The Type of this Adaptive Card Invoke Action.
+    :type type: str
+    :param id: The Id of this Adaptive Card Invoke Action.
+    :type id: str
+    :param verb: The Verb of this Adaptive Card Invoke Action.
+    :type verb: str
+    :param data: The data of this Adaptive Card Invoke Action.
+    :type data: dict[str, object]
+    """
+
+    _attribute_map = {
+        "type": {"key": "type", "type": "str"},
+        "id": {"key": "id", "type": "str"},
+        "verb": {"key": "verb", "type": "str"},
+        "data": {"key": "data", "type": "{object}"},
+    }
+
+    def __init__(
+        self, *, type: str = None, id: str = None, verb: str = None, data=None, **kwargs
+    ) -> None:
+        super(AdaptiveCardInvokeAction, self).__init__(**kwargs)
+        self.type = type
+        self.id = id
+        self.verb = verb
+        self.data = data
+
+
+class AdaptiveCardInvokeResponse(Model):
+    """AdaptiveCardInvokeResponse.
+
+    Defines the structure that is returned as the result of an Invoke activity with Name of 'adaptiveCard/action'.
+
+    :param status_code: The Card Action Response StatusCode.
+    :type status_code: int
+    :param type: The type of this Card Action Response.
+    :type type: str
+    :param value: The JSON response object.
+    :type value: dict[str, object]
+    """
+
+    _attribute_map = {
+        "status_code": {"key": "statusCode", "type": "int"},
+        "type": {"key": "type", "type": "str"},
+        "value": {"key": "value", "type": "{object}"},
+    }
+
+    def __init__(
+        self, *, status_code: int = None, type: str = None, value=None, **kwargs
+    ) -> None:
+        super(AdaptiveCardInvokeResponse, self).__init__(**kwargs)
+        self.status_code = status_code
+        self.type = type
+        self.value = value
+
+
+class AdaptiveCardInvokeValue(Model):
+    """AdaptiveCardInvokeResponse.
+
+    Defines the structure that arrives in the Activity.Value for Invoke activity with Name of 'adaptiveCard/action'.
+
+    :param action: The action of this adaptive card invoke action value.
+    :type action: :class:`botframework.schema.models.AdaptiveCardInvokeAction`
+    :param authentication: The TokenExchangeInvokeRequest for this adaptive card invoke action value.
+    :type authentication: :class:`botframework.schema.models.TokenExchangeInvokeRequest`
+    :param state: The 'state' or magic code for an OAuth flow.
+    :type state: str
+    """
+
+    _attribute_map = {
+        "action": {"key": "action", "type": "{object}"},
+        "authentication": {"key": "authentication", "type": "{object}"},
+        "state": {"key": "state", "type": "str"},
+    }
+
+    def __init__(
+        self, *, action=None, authentication=None, state: str = None, **kwargs
+    ) -> None:
+        super(AdaptiveCardInvokeValue, self).__init__(**kwargs)
+        self.action = action
+        self.authentication = authentication
+        self.state = state

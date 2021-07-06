@@ -4,11 +4,10 @@
 import os
 from setuptools import setup
 
-VERSION = os.environ["packageVersion"] if "packageVersion" in os.environ else "4.12.0"
+VERSION = os.environ["packageVersion"] if "packageVersion" in os.environ else "4.15.0"
 REQUIRES = [
     "botbuilder-schema>=4.12.0",
     "botframework-connector>=4.12.0",
-    "botbuilder-core>=4.12.0",
 ]
 
 root = os.path.abspath(os.path.dirname(__file__))
@@ -34,6 +33,8 @@ setup(
     packages=[
         "botframework.streaming",
         "botframework.streaming.payloads",
+        "botframework.streaming.payloads.assemblers",
+        "botframework.streaming.payloads.disassemblers",
         "botframework.streaming.payloads.models",
         "botframework.streaming.payload_transport",
         "botframework.streaming.transport",

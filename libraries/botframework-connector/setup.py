@@ -5,12 +5,12 @@ import os
 from setuptools import setup
 
 NAME = "botframework-connector"
-VERSION = os.environ["packageVersion"] if "packageVersion" in os.environ else "4.14.0"
+VERSION = os.environ["packageVersion"] if "packageVersion" in os.environ else "4.15.0"
 REQUIRES = [
     "msrest==0.6.10",
     "requests>=2.23.0,<2.26",
     "PyJWT>=1.5.3,<2.0.0",
-    "botbuilder-schema==4.14.0",
+    "botbuilder-schema==4.15.0",
     "msal==1.6.0",
 ]
 
@@ -35,10 +35,12 @@ setup(
         "botframework.connector.models",
         "botframework.connector.aio",
         "botframework.connector.aio.operations_async",
+        "botframework.connector.skills",
         "botframework.connector.teams",
         "botframework.connector.teams.operations",
         "botframework.connector.token_api",
         "botframework.connector.token_api.aio",
+        "botframework.connector.token_api.aio.operations_async",
         "botframework.connector.token_api.models",
         "botframework.connector.token_api.operations",
     ],

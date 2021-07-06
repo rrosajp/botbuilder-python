@@ -9,6 +9,10 @@ from ._models_py3 import FileConsentCardResponse
 from ._models_py3 import FileDownloadInfo
 from ._models_py3 import FileInfoCard
 from ._models_py3 import FileUploadInfo
+from ._models_py3 import MeetingDetails
+from ._models_py3 import MeetingInfo
+from ._models_py3 import MeetingStartEventDetails
+from ._models_py3 import MeetingEndEventDetails
 from ._models_py3 import MessageActionsPayload
 from ._models_py3 import MessageActionsPayloadApp
 from ._models_py3 import MessageActionsPayloadAttachment
@@ -83,6 +87,10 @@ __all__ = [
     "FileDownloadInfo",
     "FileInfoCard",
     "FileUploadInfo",
+    "MeetingDetails",
+    "MeetingInfo",
+    "MeetingStartEventDetails",
+    "MeetingEndEventDetails",
     "MessageActionsPayload",
     "MessageActionsPayloadApp",
     "MessageActionsPayloadAttachment",
